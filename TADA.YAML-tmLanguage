@@ -1,4 +1,3 @@
-# [PackageDev] target_format: plist, ext: tmLanguage
 ---
 name: TADA
 scopeName: source.tada
@@ -8,28 +7,27 @@ uuid: 57696626-eafa-4bc3-b96c-7131f2bb2dda
 patterns:
 
 - comment: Start of implicit (top-level) task.
-  begin: "^([√xX\\.~-])"
+  begin: "^([√vVxX\\.~=-])(?=[ \\t]*[\\S])"
   beginCaptures:
     '1': {name: keyword}
   end: "[\\n\\r]"
   patterns:
-  - include: $self
-  - name: support.function
-    match: .
+    - include: $self
+    - name: support.function
+      match: .
 
 - comment: Start of explicit task.
-  begin: "^\\s*(- \\[.\\])"
+  begin: "^\\s*((?:-\\s*)?\\[.\\])"
   beginCaptures:
     '1': {name: keyword}
   end: "[\\n\\r]"
   patterns:
-  - include: $self
-  - name: support.function
-    match: .
+    - include: $self
+    - name: support.function
+      match: .
 
-- match: "[ \\t]([!@#/+=^-]+)([\\w\\.-]+)"
-  # name: comment
-  comment: A TODO tag.
+- comment: A TADA tag.
+  match: "[ \\t]([!@#/+=^-]+)([\\w\\.-]+)"
   captures:
     '1': {name: string}
     '2': {name: string}
