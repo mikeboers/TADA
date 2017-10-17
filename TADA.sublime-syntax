@@ -1,0 +1,49 @@
+%YAML 1.2
+---
+name: TADA
+fileTypes: []
+uuid: 57696626-eafa-4bc3-b96c-7131f2bb2dda
+scope: text.tada
+
+
+variables:
+  status: '[√vVxX\.~=-]'
+  tag: '[!@#_/+=^_%-]'
+
+contexts:
+
+  main:
+
+    # Implicit (top-level) task.
+    - match: '^({{status}})(?=[ \t]*[\w])'
+      captures:
+        '1': keyword
+      push: task
+
+    # Explicit task.
+    - match: '^\s*((?:-\s*)?\[({{status}}| )\])'
+      captures:
+        '1': keyword
+      push: task
+
+  task:
+
+    - meta_scope: string
+
+    # End of task.
+    - match: '[\n\r]'
+      pop: true
+
+    # Tags.
+    - match: '[ \t]({{tag}}+)([\w\.-]+)'
+      captures:
+        '1': support.function
+        '2': support.function
+
+    # User tags.
+    - match: '[ \t](\w+):(\S+)'
+      captures:
+        '0': support.function
+
+
+
